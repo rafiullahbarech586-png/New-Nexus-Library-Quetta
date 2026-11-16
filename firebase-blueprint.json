@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Student admission and membership record in New NEXUS Library",
+      "type": "object",
+      "properties": {
+        "regNumber": { "type": "string" },
+        "fullName": { "type": "string" },
+        "fatherName": { "type": "string" },
+        "cnicOrBForm": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "photoUri": { "type": "string" },
+        "shift": { "type": "string" },
+        "seatNumber": { "type": "string" },
+        "totalFee": { "type": "number" },
+        "feeSubmitted": { "type": "number" },
+        "feeRemaining": { "type": "number" },
+        "isScholarship": { "type": "boolean" },
+        "scholarshipDetails": { "type": "string" },
+        "admissionDate": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "required": ["regNumber", "fullName", "fatherName", "cnicOrBForm", "totalFee", "feeSubmitted"]
+    },
+    "FeePayment": {
+      "title": "FeePayment",
+      "description": "Fee installment transaction and receipt record",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentDate": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "receiptNumber": { "type": "string" },
+        "note": { "type": "string" }
+      },
+      "required": ["studentId", "studentName", "amount", "receiptNumber"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Library book catalog and check-out status",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "category": { "type": "string" },
+        "isbn": { "type": "string" },
+        "isAvailable": { "type": "boolean" },
+        "issuedToStudentId": { "type": "string" },
+        "issuedToStudentName": { "type": "string" },
+        "issueDate": { "type": "number" }
+      },
+      "required": ["title", "author", "isAvailable"]
+    },
+    "Notice": {
+      "title": "Notice",
+      "description": "Library announcement on notice board",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "postedDate": { "type": "number" },
+        "importance": { "type": "string" }
+      },
+      "required": ["title", "message", "postedDate"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Enrolled students at New NEXUS Library accessible to administrators and verified users"
+    },
+    "/fee_payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/FeePayment" },
+      "description": "Payment records and receipts"
+    },
+    "/books/{bookId}": {
+      "schema": { "$ref": "#/entities/Book" },
+      "description": "Library books inventory"
+    },
+    "/notices/{noticeId}": {
+      "schema": { "$ref": "#/entities/Notice" },
+      "description": "Library announcements and notices"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "New NEXUS Library",
+  "description": "Complete library and student management system featuring admin and student portals, admissions with CNIC/B-Form and photos, fee submission & balance tracking, scholarship management, and total strength statistics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isValidStudent(data) {
+      return data.fullName is string && data.fullName.size() > 0 &&
+             data.fatherName is string &&
+             data.cnicOrBForm is string &&
+             data.regNumber is string &&
+             data.totalFee is number && data.totalFee >= 0 &&
+             data.feeSubmitted is number && data.feeSubmitted >= 0;
+    }
+
+    function isValidPayment(data) {
+      return data.studentId is string &&
+             data.studentName is string &&
+             data.amount is number && data.amount > 0 &&
+             data.receiptNumber is string;
+    }
+
+    function isValidBook(data) {
+      return data.title is string && data.title.size() > 0 &&
+             data.author is string &&
+             data.isAvailable is bool;
+    }
+
+    function isValidNotice(data) {
+      return data.title is string && data.title.size() > 0 &&
+             data.message is string &&
+             data.postedDate is number;
+    }
+
+    match /students/{studentId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && isValidStudent(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+
+    match /fee_payments/{paymentId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidPayment(request.resource.data);
+      allow update, delete: if isAuthenticated();
+    }
+
+    match /books/{bookId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && isValidBook(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+
+    match /notices/{noticeId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && isValidNotice(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+  }
+}
